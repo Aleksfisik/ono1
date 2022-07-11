@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/admin")
 public class RestUserController {
 
     private final UserService userService;
@@ -55,14 +55,14 @@ public class RestUserController {
 
     @PutMapping("/users/{id}")
     public ResponseEntity<DataInfoHandler> apiUpdateUser(@PathVariable("id") long id,
-                                              @RequestBody @Valid User user,
-                                              BindingResult bindingResult) {
+                                                         @RequestBody @Valid User user,
+                                                         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String error = getErrorsFromBindingResult(bindingResult);
             return new ResponseEntity<>(new DataInfoHandler(error), HttpStatus.BAD_REQUEST);
         }
         try {
-            userService.update(user.getId(),user);
+            userService.update(user.getId(), user);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {
             throw new UserWithSuchLoginExist("User with such login Exist");

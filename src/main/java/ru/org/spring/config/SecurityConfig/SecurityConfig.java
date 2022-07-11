@@ -45,7 +45,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login?logout")
                 .and().csrf().disable();
         http.authorizeRequests()
-                .antMatchers("/").authenticated();
+                .antMatchers("/user/**").authenticated()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .and()
+                .formLogin()
+                .successHandler(successUserHandler)
+                .and()
+                .logout().logoutSuccessUrl("/");
     }
 
     @Autowired

@@ -13,11 +13,19 @@ const userFetchService = {
         'Referer': null
     },
     // bodyAdd : async function(user) {return {'method': 'POST', 'headers': this.head, 'body': user}},
-    findAllUsers: async () => await fetch('api/users'),
-    findOneUser: async (id) => await fetch(`api/users/${id}`),
-    addNewUser: async (user) => await fetch('api/users', {method: 'POST', headers: userFetchService.head, body: JSON.stringify(user)}),
-    updateUser: async (user, id) => await fetch(`api/users/${id}`, {method: 'PUT', headers: userFetchService.head, body: JSON.stringify(user)}),
-    deleteUser: async (id) => await fetch(`api/users/${id}`, {method: 'DELETE', headers: userFetchService.head})
+    findAllUsers: async () => await fetch('admin/users'),
+    findOneUser: async (id) => await fetch(`admin/users/${id}`),
+    addNewUser: async (user) => await fetch('admin/users', {
+        method: 'POST',
+        headers: userFetchService.head,
+        body: JSON.stringify(user)
+    }),
+    updateUser: async (user, id) => await fetch(`admin/users/${id}`, {
+        method: 'PUT',
+        headers: userFetchService.head,
+        body: JSON.stringify(user)
+    }),
+    deleteUser: async (id) => await fetch(`admin/users/${id}`, {method: 'DELETE', headers: userFetchService.head})
 }
 
 async function getTableWithUsers() {
@@ -36,12 +44,12 @@ async function getTableWithUsers() {
                             <td>${user.age}</td>    
                             <td>${user.email}</td>   
                             <td>
-                                <button type="button" data-userid="${user.id}" data-action="edit" class="btn btn-outline-secondary" 
-                                data-toggle="modal" data-target="#someDefaultModal"></button>
+                                <button type="button" data-userid="${user.id}" data-action="edit" class="btn btn-primary " 
+                                data-toggle="modal" data-target="#someDefaultModal">Edit</button>
                             </td>
                             <td>
-                                <button type="button" data-userid="${user.id}" data-action="delete" class="btn btn-outline-danger" 
-                                data-toggle="modal" data-target="#someDefaultModal"></button>
+                                <button type="button" data-userid="${user.id}" data-action="delete" class="btn btn-danger" 
+                                data-toggle="modal" data-target="#someDefaultModal">Delete</button>
                             </td>
                         </tr>
                 )`;
@@ -107,7 +115,6 @@ async function getDefaultModal() {
 }
 
 
-
 async function editUser(modal, id) {
     let preuser = await userFetchService.findOneUser(id);
     let user = preuser.json();
@@ -164,7 +171,6 @@ async function editUser(modal, id) {
 }
 
 
-
 async function deleteUser(modal, id) {
     await userFetchService.deleteUser(id);
     getTableWithUsers();
@@ -175,12 +181,8 @@ async function deleteUser(modal, id) {
 }
 
 
-
-
-
-
 async function addNewUser() {
-    $('#addNewUserButton').click(async () =>  {
+    $('#addNewUserButton').click(async () => {
         let addUserForm = $('#defaultSomeForm')
         let name = addUserForm.find('#AddNewUserName').val().trim();
         let password = addUserForm.find('#AddNewUserPassword').val().trim();

@@ -21,6 +21,7 @@ public class UserServiceImp implements UserService {
     public List<User> findAll() {
         return userDao.index1();
     }
+
     @Transactional
     @Override
     public void deleteById(Long aLong) {
@@ -42,6 +43,7 @@ public class UserServiceImp implements UserService {
     public User getById(Long aLong) {
         return userDao.show1(aLong);
     }
+
     @Transactional
     @Override
     public void update(Long id, User updatedPerson) {
